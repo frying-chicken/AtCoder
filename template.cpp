@@ -16,13 +16,22 @@ using vui = vector<ui>;
 using vll = vector<ll>;
 using vull = vector<ull>;
 
+template <typename T>
+concept IO = requires(T t) {
+    cin >> t;
+    cout << t;
+};
+
+template <typename T>
+concept Tuple = requires { tuple_size<T>::value; };
+
 template <typename C>
 concept Container = requires(C c) {
     begin(c);
     end(c);
 } && !same_as<C, string>;
 
-template <typename T, typename Function, size_t idx = 0>
+template <Tuple T, typename Function, size_t idx = 0>
 void for_each(T &t, Function f)
 {
     if constexpr (idx < tuple_size<T>::value)
@@ -31,20 +40,20 @@ void for_each(T &t, Function f)
         for_each<T, Function, idx + 1>(t, f);
     }
 }
-template <class T, size_t n, size_t idx = 0>
+template <size_t n, class T, size_t idx = 0>
 auto make_vec(const size_t (&d)[n], const T &v) noexcept
 {
     if constexpr (idx < n)
-        return vector(d[idx], make_vec<T, n, idx + 1>(d, v));
+        return vector(d[idx], make_vec<n, T, idx + 1>(d, v));
     else
         return v;
 }
 
 void in() {};
-template <typename T>
+template <IO T>
 void in(T &x) { cin >> x; }
-template <typename... Args>
-void in(tuple<Args...> &t)
+template <Tuple T>
+void in(T &t)
 {
     for_each(t, [](auto &x)
              { in(x); });
@@ -77,10 +86,10 @@ template <typename... Args>
 tuple<Args...> in() { return input; }
 
 void out() {};
-template <typename T>
+template <IO T>
 void out(const T &x) { cout << x << " "; }
-template <typename... Args>
-void out(const tuple<Args...> &t)
+template <Tuple T>
+void out(const T &t)
 {
     for_each(t, [](auto &x)
              { out(x); });
@@ -124,7 +133,6 @@ struct Fast
 
 void Main()
 {
-    tuple<int,int,string> a;
-    in(a);
-    out(a);
+    auto [a, b, c] = in<int, string, double>();
+    out(a, b, c);
 }
