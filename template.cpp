@@ -16,59 +16,68 @@ using vui = vector<ui>;
 using vll = vector<ll>;
 using vull = vector<ull>;
 
-template <typename T>
-concept IO = requires(T t) {
-    cin >> t;
-    cout << t;
-};
+#define all(x) std::begin(x), std::end(x)
 
-template <typename T>
-concept Tuple = requires { tuple_size<T>::value; };
-
-template <typename C>
-concept Container = requires(C c) {
-    begin(c);
-    end(c);
-} && !same_as<C, string>;
-
-template <Tuple T, typename Function, size_t idx = 0>
-void for_each(T &t, Function f)
+template <size_t idx = 0, typename... T, typename Function>
+void for_each(tuple<T...> &x, Function f)
 {
-    if constexpr (idx < tuple_size<T>::value)
+    if constexpr (idx < sizeof...(T))
     {
-        f(get<idx>(t));
-        for_each<T, Function, idx + 1>(t, f);
+        f(get<idx>(x));
+        for_each<idx + 1>(x, f);
     }
 }
-template <size_t n, class T, size_t idx = 0>
-auto make_vec(const size_t (&d)[n], const T &v) noexcept
+template <size_t idx = 0, typename... T, typename Function>
+void for_each(const tuple<T...> &x, Function f)
+{
+    if constexpr (idx < sizeof...(T))
+    {
+        f(get<idx>(x));
+        for_each<idx + 1>(x, f);
+    }
+}
+
+template <class T, size_t idx = 0, size_t n>
+auto make_vector(const size_t (&d)[n]) noexcept
+{
+    if constexpr (idx + 1 < n)
+        return vector(d[idx], make_vector<T, idx + 1>(d));
+    else
+        return vector<T>(d[idx]);
+}
+template <class T, size_t idx = 0, size_t n>
+auto make_vector(const size_t (&d)[n], const T v) noexcept
 {
     if constexpr (idx < n)
-        return vector(d[idx], make_vec<n, T, idx + 1>(d, v));
+        return vector(d[idx], make_vector<T, idx + 1>(d, v));
     else
         return v;
 }
 
+template <ranges::range T>
+void _in(T &x);
+
+template <typename T>
+void _in(T &x) { cin >> x; }
+void _in(string &x) { cin >> x; }
+template <typename... T>
+void _in(tuple<T...> &x)
+{
+    for_each(x, [](auto &x)
+             { _in(x); });
+}
+template <ranges::range T>
+void _in(T &x)
+{
+    for (auto &i : x)
+        _in(i);
+}
 void in() {};
-template <IO T>
-void in(T &x) { cin >> x; }
-template <Tuple T>
-void in(T &t)
+template <typename Head, typename... Tail>
+void in(Head &&head, Tail &&...tail)
 {
-    for_each(t, [](auto &x)
-             { in(x); });
-}
-template <Container C>
-void in(C &c)
-{
-    for (auto &i : c)
-        in(i);
-}
-template <typename T, typename... U>
-void in(T &head, U &...tail)
-{
-    in(head);
-    in(tail...);
+    _in(forward<Head>(head));
+    in(forward<Tail>(tail)...);
 }
 
 struct Input
@@ -82,29 +91,30 @@ struct Input
     }
 } input;
 
-template <typename... Args>
-tuple<Args...> in() { return input; }
+template <typename... T>
+void _out(const tuple<T...> &x);
 
-void out() {};
-template <IO T>
-void out(const T &x) { cout << x << " "; }
-template <Tuple T>
-void out(const T &t)
+template <typename T>
+void _out(const T &x) { cout << x << " "; }
+void _out(const string &x) { cout << x << " "; }
+template <typename... T>
+void _out(const tuple<T...> &x)
 {
-    for_each(t, [](auto &x)
-             { out(x); });
-};
-template <Container C>
-void out(const C &c)
-{
-    for (auto &i : c)
-        out(i);
+    for_each(x, [](const auto &x)
+             { _out(x); });
 }
-template <class Head, class... Tail>
-void out(const Head &head, const Tail &...tail)
+template <ranges::range T>
+void _out(const T &x)
 {
-    out(head);
-    out(tail...);
+    for (const auto &i : x)
+        _out(i);
+}
+void out() {};
+template <class Head, class... Tail>
+void out(Head &&head, Tail &&...tail)
+{
+    _out(head);
+    out(tail);
 }
 
 void YESNO(bool b) { out(b ? "YES" : "NO"); }
@@ -133,6 +143,5 @@ struct Fast
 
 void Main()
 {
-    auto [a, b, c] = in<int, string, double>();
-    out(a, b, c);
+
 }
