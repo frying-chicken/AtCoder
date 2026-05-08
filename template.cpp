@@ -1,3 +1,4 @@
+// ver 1.4.1
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -5,7 +6,7 @@ void Main();
 int main()
 {
     Main();
-    cout << endl;
+    cout << '\n';
 }
 
 using i8 = int8_t;
@@ -55,10 +56,7 @@ void _in(T &x)
         _in(i);
 }
 template <typename... Ts>
-void in(Ts &...xs)
-{
-    (_in(xs), ...);
-}
+void in(Ts &...xs) { (_in(xs), ...); }
 
 struct Input
 {
@@ -91,10 +89,7 @@ void _out(const T &x)
         _out(i);
 }
 template <typename... Ts>
-void out(const Ts &...xs)
-{
-    (_out(xs), ...);
-}
+void out(const Ts &...xs) { (_out(xs), ...); }
 
 void YESNO(bool b) { out(b ? "YES" : "NO"); }
 void YesNo(bool b) { out(b ? "Yes" : "No"); }
@@ -122,13 +117,4 @@ struct Fast
 
 void Main()
 {
-    // string a = input;
-    // auto b = in<int>();
-    // auto [i, j] = in<string, int>();
-    // auto x = in<string, int>();
-    // out(a, b, i, j, x);
-
-    vi v(in<int>());
-    in(v);
-    out(v);
 }
