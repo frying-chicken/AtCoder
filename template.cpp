@@ -2,19 +2,29 @@
 using namespace std;
 
 void Main();
-int main() { Main(); }
+int main()
+{
+    Main();
+    cout << endl;
+}
 
-#define int long
-using ui = unsigned int;
-using ll = long long;
-using ull = unsigned long long;
+using i8 = int8_t;
+using i16 = int16_t;
+using i32 = int32_t;
+using i64 = int64_t;
+
+using u8 = uint8_t;
+using u16 = uint16_t;
+using u32 = uint32_t;
+using u64 = uint64_t;
 
 using vs = vector<string>;
 
-using vi = vector<int>;
-using vui = vector<ui>;
-using vll = vector<ll>;
-using vull = vector<ull>;
+using vi = vector<i64>;
+using vu = vector<u64>;
+
+#define int i64
+#define uint u64
 
 #define all(x) std::begin(x), std::end(x)
 
@@ -76,8 +86,8 @@ void in() {};
 template <typename Head, typename... Tail>
 void in(Head &&head, Tail &&...tail)
 {
-    _in(forward<Head>(head));
-    in(forward<Tail>(tail)...);
+    _in(head);
+    in(tail...);
 }
 
 struct Input
@@ -90,6 +100,11 @@ struct Input
         return x;
     }
 } input;
+
+template <typename T>
+T in() { return static_cast<T>(input); }
+template <typename T, typename U, typename... V>
+tuple<T, U, V...> in() { return in<tuple<T, U, V...>>(); }
 
 template <typename... T>
 void _out(const tuple<T...> &x);
@@ -114,7 +129,7 @@ template <class Head, class... Tail>
 void out(Head &&head, Tail &&...tail)
 {
     _out(head);
-    out(tail);
+    out(tail...);
 }
 
 void YESNO(bool b) { out(b ? "YES" : "NO"); }
@@ -143,5 +158,4 @@ struct Fast
 
 void Main()
 {
-
 }
