@@ -28,35 +28,8 @@ using vu = vector<u64>;
 
 #define all(x) std::begin(x), std::end(x)
 
-template <size_t idx = 0, typename... T, typename Function>
-void for_each(tuple<T...> &x, Function f)
-{
-    if constexpr (idx < sizeof...(T))
-    {
-        f(get<idx>(x));
-        for_each<idx + 1>(x, f);
-    }
-}
-template <size_t idx = 0, typename... T, typename Function>
-void for_each(const tuple<T...> &x, Function f)
-{
-    if constexpr (idx < sizeof...(T))
-    {
-        f(get<idx>(x));
-        for_each<idx + 1>(x, f);
-    }
-}
-
 template <class T, size_t idx = 0, size_t n>
-auto make_vector(const size_t (&d)[n]) noexcept
-{
-    if constexpr (idx + 1 < n)
-        return vector(d[idx], make_vector<T, idx + 1>(d));
-    else
-        return vector<T>(d[idx]);
-}
-template <class T, size_t idx = 0, size_t n>
-auto make_vector(const size_t (&d)[n], const T v) noexcept
+auto make_vector(const size_t (&d)[n], const T v = {})
 {
     if constexpr (idx < n)
         return vector(d[idx], make_vector<T, idx + 1>(d, v));
@@ -64,30 +37,27 @@ auto make_vector(const size_t (&d)[n], const T v) noexcept
         return v;
 }
 
-template <ranges::range T>
-void _in(T &x);
+template <typename T>
+concept Range = ranges::range<T> && !convertible_to<T, string_view>;
 
 template <typename T>
 void _in(T &x) { cin >> x; }
-void _in(string &x) { cin >> x; }
-template <typename... T>
-void _in(tuple<T...> &x)
+template <typename... Ts>
+void _in(tuple<Ts...> &x)
 {
-    for_each(x, [](auto &x)
-             { _in(x); });
+    apply([](auto &...xs)
+          { (_in(xs), ...); }, x);
 }
-template <ranges::range T>
+template <Range T>
 void _in(T &x)
 {
     for (auto &i : x)
         _in(i);
 }
-void in() {};
-template <typename Head, typename... Tail>
-void in(Head &&head, Tail &&...tail)
+template <typename... Ts>
+void in(Ts &...xs)
 {
-    _in(head);
-    in(tail...);
+    (_in(xs), ...);
 }
 
 struct Input
@@ -106,30 +76,24 @@ T in() { return static_cast<T>(input); }
 template <typename T, typename U, typename... V>
 tuple<T, U, V...> in() { return in<tuple<T, U, V...>>(); }
 
-template <typename... T>
-void _out(const tuple<T...> &x);
-
 template <typename T>
 void _out(const T &x) { cout << x << " "; }
-void _out(const string &x) { cout << x << " "; }
-template <typename... T>
-void _out(const tuple<T...> &x)
+template <typename... Ts>
+void _out(const tuple<Ts...> &x)
 {
-    for_each(x, [](const auto &x)
-             { _out(x); });
+    apply([](const auto &...xs)
+          { (_out(xs), ...); }, x);
 }
-template <ranges::range T>
+template <Range T>
 void _out(const T &x)
 {
     for (const auto &i : x)
         _out(i);
 }
-void out() {};
-template <class Head, class... Tail>
-void out(Head &&head, Tail &&...tail)
+template <typename... Ts>
+void out(const Ts &...xs)
 {
-    _out(head);
-    out(tail...);
+    (_out(xs), ...);
 }
 
 void YESNO(bool b) { out(b ? "YES" : "NO"); }
@@ -158,4 +122,13 @@ struct Fast
 
 void Main()
 {
+    // string a = input;
+    // auto b = in<int>();
+    // auto [i, j] = in<string, int>();
+    // auto x = in<string, int>();
+    // out(a, b, i, j, x);
+
+    vi v(in<int>());
+    in(v);
+    out(v);
 }
