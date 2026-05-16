@@ -2,11 +2,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+void Init();
 void Main();
 int main()
 {
+    Init();
     Main();
-    cout << '\n';
 }
 
 using i8 = int8_t;
@@ -43,6 +44,8 @@ concept Range = ranges::range<T> && !convertible_to<T, string_view>;
 
 template <typename T>
 void _in(T &x) { cin >> x; }
+template <typename T, typename U>
+void _in(pair<T, U> &x) { cin >> x.first >> x.second; }
 template <typename... Ts>
 void _in(tuple<Ts...> &x)
 {
@@ -76,6 +79,8 @@ tuple<T, U, V...> in() { return in<tuple<T, U, V...>>(); }
 
 template <typename T>
 void _out(const T &x) { cout << x << " "; }
+template <typename T, typename U>
+void _out(const pair<T, U> &x) { cout << x.first << " " << x.second << " "; }
 template <typename... Ts>
 void _out(const tuple<Ts...> &x)
 {
@@ -91,6 +96,12 @@ void _out(const T &x)
 template <typename... Ts>
 void out(const Ts &...xs) { (_out(xs), ...); }
 
+void set_fixed_precision(int n = 0)
+{
+    if (n > 0)
+        cout << fixed << setprecision(n);
+}
+
 void YESNO(bool b) { out(b ? "YES" : "NO"); }
 void YesNo(bool b) { out(b ? "Yes" : "No"); }
 void yesno(bool b) { out(b ? "yes" : "no"); }
@@ -103,14 +114,13 @@ bool chmax(T &a, const T &b) { return a < b ? a = b, true : false; }
 constexpr int dx[8] = {0, 1, 0, -1, 1, -1, 1, -1};
 constexpr int dy[8] = {1, 0, -1, 0, 1, -1, -1, 1};
 
-struct Fast
+void Init()
 {
-    Fast()
-    {
-        cin.tie(nullptr);
-        ios::sync_with_stdio(false);
-    }
-} fast;
+    cin.tie(nullptr);
+    ios::sync_with_stdio(false);
+    set_fixed_precision();
+}
+
 //----------------------------------------------------------------
 //================================================================
 //----------------------------------------------------------------
