@@ -1,4 +1,4 @@
-// ver 1.5.0
+// ver 1.6.0
 // 駆け出したプログラマ
 
 #include <bits/stdc++.h>
@@ -90,16 +90,22 @@ template <typename... Ts>
 void debug(const Ts &...xs) { if constexpr (is_debug)out("debug: ", xs..., "\n"); }
 
 //----------------------------------------------------------------
-void Init();
-void Main();
-int main() {
-    Init();
-    do {
-        Main();
-        if constexpr(!is_debug) break;
-        out("Run Main() again? [y/N]");
-    }while(in<char>() == 'y');
-}
+constexpr i8 dx[8] = { 0, 1, 0, -1, 1, -1, 1, -1 };
+constexpr i8 dy[8] = { 1, 0, -1, 0, 1, -1, -1, 1 };
+
+template <typename T>
+bool chmin(T& a, const T& b) { return a > b ? a = b, true : false; }
+template <typename T>
+bool chmax(T& a, const T& b) { return a < b ? a = b, true : false; }
+
+template<std::integral... Args>
+std::common_type_t<Args...> max(const Args... args) { return std::max<std::common_type_t<Args...>>({ static_cast<std::common_type_t<Args...>>(args)... }); }
+template<std::integral... Args>
+std::common_type_t<Args...> min(const Args... args) { return std::min<std::common_type_t<Args...>>({ static_cast<std::common_type_t<Args...>>(args)... }); }
+
+void YESNO(bool b) { _out(b ? "YES" : "NO"); }
+void YesNo(bool b) { _out(b ? "Yes" : "No"); }
+void yesno(bool b) { _out(b ? "yes" : "no"); }
 
 template<int m>
 std::istream& operator>>(std::istream& is, atcoder::static_modint<m>& x) { x = in<int>();return is; }
@@ -112,22 +118,16 @@ void set_fixed_precision(int n = 0)
         std::cout << std::fixed << std::setprecision(n);
 }
 
-void YESNO(bool b) { _out(b ? "YES" : "NO"); }
-void YesNo(bool b) { _out(b ? "Yes" : "No"); }
-void yesno(bool b) { _out(b ? "yes" : "no"); }
-
-template <typename T>
-bool chmin(T& a, const T& b) { return a > b ? a = b, true : false; }
-template <typename T>
-bool chmax(T& a, const T& b) { return a < b ? a = b, true : false; }
-
-template<std::integral... Args>
-std::common_type_t<Args...> max(const Args... args) { return std::max<std::common_type_t<Args...>>({ static_cast<std::common_type_t<Args...>>(args)... }); }
-template<std::integral... Args>
-std::common_type_t<Args...> min(const Args... args) { return std::min<std::common_type_t<Args...>>({ static_cast<std::common_type_t<Args...>>(args)... }); }
-
-constexpr i8 dx[8] = { 0, 1, 0, -1, 1, -1, 1, -1 };
-constexpr i8 dy[8] = { 1, 0, -1, 0, 1, -1, -1, 1 };
+void Init();
+void Main();
+int main() {
+    Init();
+    do {
+        Main();
+        if constexpr (!is_debug) break;
+        std::cout << "\nRun Main() again? [y/N]" << std::endl;
+    } while (in<char>() == 'y');
+}
 
 //----------------------------------------------------------------
 //================================================================
