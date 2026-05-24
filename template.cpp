@@ -4,20 +4,13 @@
 #include <bits/stdc++.h>
 #include <atcoder/all>
 
-void Init();
-void Main();
-int main() {
-    Init();
-    Main();
-}
-
-//----------------------------------------------------------------
 #ifdef LOCAL
 constexpr bool is_debug = true;
 #else
 constexpr bool is_debug = false;
 #endif
 
+//----------------------------------------------------------------
 using i8 = int8_t;
 using i16 = int16_t;
 using i32 = int32_t;
@@ -97,6 +90,17 @@ template <typename... Ts>
 void debug(const Ts &...xs) { if constexpr (is_debug)out("debug: ", xs..., "\n"); }
 
 //----------------------------------------------------------------
+void Init();
+void Main();
+int main() {
+    Init();
+    do {
+        Main();
+        if constexpr(!is_debug) break;
+        out("Run Main() again? [y/N]");
+    }while(in<char>() == 'y');
+}
+
 template<int m>
 std::istream& operator>>(std::istream& is, atcoder::static_modint<m>& x) { x = in<int>();return is; }
 template<int m>
@@ -140,10 +144,11 @@ void Init()
     set_fixed_precision();
 }
 
+using namespace std;
+
 //================================================================
 //----------------------------------------------------------------
 //================================================================
-using namespace std;
 
 void Main()
 {
