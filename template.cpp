@@ -1,4 +1,4 @@
-// ver 1.7.0
+// ver 1.7.1
 // 駆け出したプログラマ
 
 #include <bits/stdc++.h>
@@ -102,9 +102,9 @@ std::common_type_t<Args...> max(const Args... args) { return std::max<std::commo
 template<std::integral... Args>
 std::common_type_t<Args...> min(const Args... args) { return std::min<std::common_type_t<Args...>>({ static_cast<std::common_type_t<Args...>>(args)... }); }
 
-bool YESNO(bool b) { _out(b ? "YES" : "NO");return b; }
-bool YesNo(bool b) { _out(b ? "Yes" : "No");return b; }
-bool yesno(bool b) { _out(b ? "yes" : "no");return b; }
+bool YESNO(bool b) { out(b ? "YES" : "NO");return b; }
+bool YesNo(bool b) { out(b ? "Yes" : "No");return b; }
+bool yesno(bool b) { out(b ? "yes" : "no");return b; }
 
 template<int m>
 std::istream& operator>>(std::istream& is, atcoder::static_modint<m>& x) { int a;is >> a;x = a;return is; }
