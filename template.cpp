@@ -21,25 +21,21 @@ using u16 = uint16_t;
 using u32 = uint32_t;
 using u64 = uint64_t;
 
-using vi = std::vector<i64>;
-using vu = std::vector<u64>;
-template <int m>
-using vm = std::vector<atcoder::static_modint<m>>;
-
-using vs = std::vector<std::string>;
+template <typename T>
+using vec = std::vector<T>;
 
 //----------------------------------------------------------------
 template <typename T>
 struct is_vector : std::false_type {};
-template <typename T, typename Allocator>
-struct is_vector<std::vector<T, Allocator>> : std::true_type {};
+template <typename T>
+struct is_vector<vec<T>> : std::true_type {};
 
 //----------------------------------------------------------------
 template <class T, size_t idx = 0, size_t n>
-auto make_vector(const size_t(&d)[n], const T v = {})
+auto make_vec(const size_t(&d)[n], const T v = {})
 {
     if constexpr (idx < n)
-        return std::vector(d[idx], make_vector<T, idx + 1>(d, v));
+        return vec(d[idx], make_vec<T, idx + 1>(d, v));
     else
         return v;
 }
@@ -84,14 +80,17 @@ void _out(const std::tuple<Ts...>& x) { std::apply([](const auto &...xs) { (_out
 template <std::ranges::range T>requires(!std::convertible_to<T, std::string_view>)
 void _out(const T& x) { for (const auto& i : x)_out(i); }
 template <typename... Ts>
-void out(const Ts &...xs) { (_out(xs), ...); }
+void out(const Ts &...xs) { (_out(xs), ...);_out("\n"); }
 
 template <typename... Ts>
-void debug(const Ts &...xs) { if constexpr (is_debug)out("debug: ", xs..., "\n"); }
+void debug(const Ts &...xs) { if constexpr (is_debug)out("debug: ", xs...); }
 
 //----------------------------------------------------------------
 constexpr i8 dx[8] = { 0, 1, 0, -1, 1, -1, 1, -1 };
 constexpr i8 dy[8] = { 1, 0, -1, 0, 1, -1, -1, 1 };
+
+constexpr bool in_bounds(i64 x, i64 n) { return 0 <= x && x < n; }
+constexpr bool in_bounds(i64 y, i64 x, i64 h, i64 w) { return in_bounds(y, h) && in_bounds(x, w); }
 
 template <typename T>
 bool chmin(T& a, const T& b) { return a > b ? a = b, true : false; }
@@ -103,14 +102,14 @@ std::common_type_t<Args...> max(const Args... args) { return std::max<std::commo
 template<std::integral... Args>
 std::common_type_t<Args...> min(const Args... args) { return std::min<std::common_type_t<Args...>>({ static_cast<std::common_type_t<Args...>>(args)... }); }
 
-void YESNO(bool b) { _out(b ? "YES" : "NO"); }
-void YesNo(bool b) { _out(b ? "Yes" : "No"); }
-void yesno(bool b) { _out(b ? "yes" : "no"); }
+bool YESNO(bool b) { _out(b ? "YES" : "NO");return b; }
+bool YesNo(bool b) { _out(b ? "Yes" : "No");return b; }
+bool yesno(bool b) { _out(b ? "yes" : "no");return b; }
 
 template<int m>
-std::istream& operator>>(std::istream& is, atcoder::static_modint<m>& x) { x = in<int>();return is; }
+std::istream& operator>>(std::istream& is, atcoder::static_modint<m>& x) { int a;is >> a;x = a;return is; }
 template<int m>
-std::ostream& operator<<(std::ostream& os, const atcoder::static_modint<m>& x) { out(x.val());return os; }
+std::ostream& operator<<(std::ostream& os, const atcoder::static_modint<m>& x) { os << x.val();return os; }
 
 void set_fixed_precision(int n = 0)
 {
@@ -125,7 +124,7 @@ int main() {
     do {
         Main();
         if constexpr (!is_debug) break;
-        std::cout << "\nRun Main() again? [y/N]" << std::endl;
+        std::cout << "Run Main() again? [y/N]" << std::endl;
     } while (in<char>() == 'y');
 }
 
@@ -152,4 +151,5 @@ using namespace std;
 
 void Main()
 {
+    out("a", 1);
 }
