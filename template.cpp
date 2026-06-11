@@ -1,4 +1,4 @@
-// ver 1.6.0
+// ver 1.7.0
 // 駆け出したプログラマ
 
 #include <bits/stdc++.h>
@@ -80,7 +80,7 @@ void _out(const std::tuple<Ts...>& x) { std::apply([](const auto &...xs) { (_out
 template <std::ranges::range T>requires(!std::convertible_to<T, std::string_view>)
 void _out(const T& x) { for (const auto& i : x)_out(i); }
 template <typename... Ts>
-void out(const Ts &...xs) { (_out(xs), ...);_out("\n"); }
+void out(const Ts &...xs) { (_out(xs), ...);std::cout << "\n"; }
 
 template <typename... Ts>
 void debug(const Ts &...xs) { if constexpr (is_debug)out("debug: ", xs...); }
@@ -111,11 +111,7 @@ std::istream& operator>>(std::istream& is, atcoder::static_modint<m>& x) { int a
 template<int m>
 std::ostream& operator<<(std::ostream& os, const atcoder::static_modint<m>& x) { os << x.val();return os; }
 
-void set_fixed_precision(int n = 0)
-{
-    if (n > 0)
-        std::cout << std::fixed << std::setprecision(n);
-}
+void set_fixed_precision(int n = 0) { if (n > 0)std::cout << std::fixed << std::setprecision(n); }
 
 void Init();
 void Main();
@@ -151,5 +147,4 @@ using namespace std;
 
 void Main()
 {
-    out("a", 1);
 }
